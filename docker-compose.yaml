@@ -33,3 +33,16 @@ services:
       - "3306:3306"
     volumes:
       - ./docker-volumes/mysql:/var/lib/mysql
+
+  postgres:
+    container_name: postgres_container
+    image: postres
+    restart: always
+    environment:
+      - POSTGRES_DB=tasqalent
+      - POSTGRES_USER=tq_auth
+      - POSTGRES_PASSWORD=tq_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker-volumes/postgres:/var/lib/postgresql
