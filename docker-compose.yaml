@@ -81,6 +81,23 @@ services:
     networks:
       - elastic
 
+  kibana:
+    container_name: kibana_container
+    image: docker.elastic.co/kibana/kibana:9.2.0
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=["http://elasticsearch_container:9200"]
+      - ELASTICSEARCH_USERNAME=kibana
+      - ELASTICSEARCH_PASSWORD=kibana_password
+    ports:
+      - "5601:5601"
+    networks:
+      - elastic
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    depends_on:
+      - elasticsearch
+
 networks:
   elastic:
     name: elastic
