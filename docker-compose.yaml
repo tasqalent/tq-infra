@@ -49,6 +49,9 @@ services:
     container_name: rabbitmq_container
     image: rabbitmq:management-alpine
     restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=tasqalent
+      - RABBITMQ_DEFAULT_PASS=tq_password
     ports:
       # AMQP port
       - "5672:5672"
