@@ -57,6 +57,8 @@ services:
       - "5672:5672"
       # Management UI
       - "15672:15672"
+    networks:
+      - elastic
 
   elasticsearch:
     container_name: elasticsearch_container
@@ -117,8 +119,15 @@ services:
       RABBITMQ_PASSWORD: tq_password
       RABBITMQ_VHOST: /
       CELERY_TASK_DEFAULT_QUEUE: notifications
+      ELASTICSEARCH_HOST: http://elasticsearch:9200
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: elastic_password
+      ELASTICSEARCH_NOTIFICATIONS_INDEX: notifications
     depends_on:
       - rabbitmq
+      - elasticsearch
+    networks:
+      - elastic
 
 networks:
   elastic:
