@@ -100,6 +100,26 @@ services:
     depends_on:
       - elasticsearch
 
+  # ============================================================
+
+  notification-worker:
+    build:
+      context: ../tq-notification-service
+    container_name: notification_worker
+    restart: always
+    environment:
+      SERVICE_NAME: tq-notification-service
+      SERVICE_ENV: local
+      LOG_LEVEL: INFO
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: tasqalent
+      RABBITMQ_PASSWORD: tq_password
+      RABBITMQ_VHOST: /
+      CELERY_TASK_DEFAULT_QUEUE: notifications
+    depends_on:
+      - rabbitmq
+
 networks:
   elastic:
     name: elastic
