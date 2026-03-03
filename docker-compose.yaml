@@ -57,6 +57,8 @@ services:
       - "5672:5672"
       # Management UI
       - "15672:15672"
+    networks:
+      - elastic
 
   elasticsearch:
     container_name: elasticsearch_container
@@ -99,6 +101,33 @@ services:
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml:ro
     depends_on:
       - elasticsearch
+
+  # ============================================================
+
+  notification-worker:
+    build:
+      context: ../tq-notification-service
+    container_name: notification_worker
+    restart: always
+    environment:
+      SERVICE_NAME: tq-notification-service
+      SERVICE_ENV: local
+      LOG_LEVEL: INFO
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: tasqalent
+      RABBITMQ_PASSWORD: tq_password
+      RABBITMQ_VHOST: /
+      CELERY_TASK_DEFAULT_QUEUE: notifications
+      ELASTICSEARCH_HOST: http://elasticsearch:9200
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: elastic_password
+      ELASTICSEARCH_NOTIFICATIONS_INDEX: notifications
+    depends_on:
+      - rabbitmq
+      - elasticsearch
+    networks:
+      - elastic
 
 networks:
   elastic:
