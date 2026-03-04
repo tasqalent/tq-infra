@@ -122,7 +122,7 @@ services:
       ELASTICSEARCH_HOST: http://elasticsearch:9200
       ELASTICSEARCH_USERNAME: elastic
       ELASTICSEARCH_PASSWORD: elastic_password
-      ELASTICSEARCH_NOTIFICATIONS_INDEX: notifications
+      ELASTICSEARCH_NOTIFICATIONS_INDEX: logs-notification-service
     depends_on:
       - rabbitmq
       - elasticsearch
